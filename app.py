@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import matplotlib.pyplot as plt
+import base64
 
 
 # ============================================================
@@ -12,9 +13,52 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(
     page_title="Rwanda House Price Predictor",
-    page_icon="🏠",
     layout="wide"
 )
+
+
+def set_background(image_file):
+    with open(image_file, "rb") as file:
+        encoded_image = base64.b64encode(file.read()).decode()
+
+    st.markdown(
+        f"""
+        <style>
+
+        .stApp {{
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.55),
+                    rgba(0, 0, 0, 0.55)
+                ),
+                url("data:image/jpeg;base64,{encoded_image}");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }}
+
+        .block-container {{
+            background-color: rgba(0, 0, 0, 0.55);
+            padding: 2rem 3rem;
+            border-radius: 15px;
+        }}
+
+        h1, h2, h3, p, label {{
+            color: white !important;
+        }}
+
+        [data-testid="stWidgetLabel"] p {{
+            color: white !important;
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+set_background("house_background.jpg"))
 
 
 # ============================================================
@@ -40,7 +84,7 @@ except Exception as e:
 # TITLE
 # ============================================================
 
-st.title("🏠 Rwanda House Price Prediction System")
+st.title("Rwanda House Price Prediction System")
 
 st.write(
     """
@@ -134,7 +178,7 @@ with col2:
 st.divider()
 
 predict_button = st.button(
-    "🔮 Predict House Price",
+    "Predict House Price",
     type="primary",
     use_container_width=True
 )
@@ -283,7 +327,7 @@ if predict_button:
         )
 
         st.download_button(
-            label="📥 Download Prediction Report",
+            label="Download Prediction Report",
             data=csv_data,
             file_name="house_price_prediction.csv",
             mime="text/csv",
